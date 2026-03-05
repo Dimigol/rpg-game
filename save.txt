@@ -1,0 +1,17 @@
+Nome:dimitri
+Vida:222
+VidaMaxima:240
+Ouro:1699
+Nivel:9
+XP:140
+XpProximoNivel:420
+AtaqueBase:44
+BonusArma:8
+BonusEscudo:10
+BonusArmadura:12
+ArmaEquipada:Espada de Ferro
+EscudoEquipado:Escudo de Aco
+ArmaduraEquipada:Armadura Pesada
+BuffTurnos:0
+Itens:1
+Item:Pocao Grande|40|70
