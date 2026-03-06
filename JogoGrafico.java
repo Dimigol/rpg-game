@@ -144,16 +144,13 @@ public class JogoGrafico extends JFrame {
         campoNome.setHorizontalAlignment(JTextField.CENTER);
         campoNome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton btnNeutro = new JButton("Novo Jogo (Neutro)");
-        JButton btnHumor = new JButton("Novo Jogo (Humor)");
+        JButton btnNovoJogo = new JButton("Novo Jogo");
         JButton btnCarregar = new JButton("Carregar Save");
 
-        btnNeutro.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnHumor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnNovoJogo.setAlignmentX(Component.CENTER_ALIGNMENT);
         btnCarregar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        btnNeutro.addActionListener(e -> iniciarNovoJogo(true));
-        btnHumor.addActionListener(e -> iniciarNovoJogo(false));
+        btnNovoJogo.addActionListener(e -> iniciarNovoJogo());
         btnCarregar.addActionListener(e -> carregarJogo());
 
         menuFeedback = new JLabel(" ");
@@ -164,9 +161,7 @@ public class JogoGrafico extends JFrame {
         card.add(Box.createVerticalStrut(8));
         card.add(campoNome);
         card.add(Box.createVerticalStrut(12));
-        card.add(btnNeutro);
-        card.add(Box.createVerticalStrut(8));
-        card.add(btnHumor);
+        card.add(btnNovoJogo);
         card.add(Box.createVerticalStrut(8));
         card.add(btnCarregar);
         card.add(Box.createVerticalStrut(10));
@@ -373,14 +368,14 @@ public class JogoGrafico extends JFrame {
         return panel;
     }
 
-    private void iniciarNovoJogo(boolean neutro) {
+    private void iniciarNovoJogo() {
         String nome = campoNome.getText() == null ? "" : campoNome.getText().trim();
         if (nome.isEmpty()) {
             menuFeedback.setText("Digite um nome valido.");
             return;
         }
 
-        ConfiguracaoJogo.setLinguagemNeutra(neutro);
+        ConfiguracaoJogo.setLinguagemNeutra(true);
         heroi = new Personagem(nome);
         menuFeedback.setText(" ");
         hubLog.setText("Novo heroi criado: " + heroi.getNome() + "\n");
