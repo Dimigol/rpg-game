@@ -170,6 +170,7 @@
       <div class="row" id="battleActions" style="display:none">
         <button id="btnAttack">Atacar</button>
         <button class="alt" id="btnBattlePotion">Usar Pocao</button>
+        <button id="btnBattleSolar">Acao Solar</button>
         <button id="btnFlee" class="danger">Fugir</button>
       </div>
     </section>
@@ -212,10 +213,16 @@
       { type: "potion", name: "Pocao Pequena", cost: 15, heal: 25 },
       { type: "potion", name: "Pocao Media", cost: 25, heal: 45 },
       { type: "potion", name: "Pocao Grande", cost: 40, heal: 70 },
+      { type: "potion", name: "Pocao Suprema", cost: 85, heal: 130 },
       { type: "weapon", name: "Espada de Ferro", cost: 60, atk: 8 },
       { type: "weapon", name: "Espada Lendaria", cost: 120, atk: 15 },
+      { type: "weapon", name: "Espada do Apocalipse", cost: 230, atk: 24 },
+      { type: "shield", name: "Escudo de Madeira", cost: 45, def: 5 },
       { type: "shield", name: "Escudo de Aco", cost: 90, def: 10 },
-      { type: "armor", name: "Armadura Pesada", cost: 110, def: 12 }
+      { type: "shield", name: "Escudo Titanico", cost: 210, def: 18 },
+      { type: "armor", name: "Armadura de Couro", cost: 55, def: 6 },
+      { type: "armor", name: "Armadura Pesada", cost: 110, def: 12 },
+      { type: "armor", name: "Armadura Draconica", cost: 240, def: 20 }
     ];
 
     function rnd(min, max) {
@@ -236,7 +243,7 @@
       const h = state.hero;
       if (!h) return;
       statusLine.textContent =
-        `${h.name} | Nv ${h.level} | XP ${h.xp}/${h.xpNext} | HP ${h.hp}/${h.maxHp} | Ouro ${h.gold} | ATQ ${heroAtk()} | DEF ${heroDef()}${h.solarTurns > 0 ? " | Solar " + h.solarTurns + "t" : ""}`;
+        `${h.name} | Nv ${h.level} | XP ${h.xp}/${h.xpNext} | HP ${h.hp}/${h.maxHp} | Ouro ${h.gold} | ATQ ${heroAtk()} | DEF ${heroDef()} | Arma: ${h.weaponName} | Escudo: ${h.shieldName} | Armadura: ${h.armorName}${h.solarTurns > 0 ? " | Solar " + h.solarTurns + "t" : ""}`;
     }
 
     function heroAtk() {
@@ -322,6 +329,32 @@
       refreshUI();
     }
 
+    function scaleNormalEnemy(enemy, heroLevel) {
+      const initialLevels = Math.min(Math.max(0, heroLevel - 1), 2);
+      const advancedLevels = Math.max(0, heroLevel - 3);
+      enemy.hp += (initialLevels * 6) + (advancedLevels * 16);
+      enemy.atk += (initialLevels * 1) + (advancedLevels * 3);
+      enemy.maxHp = enemy.hp;
+    }
+
+    function scaleBossEnemy(enemy, heroLevel) {
+      const initialLevels = Math.min(Math.max(0, heroLevel - 1), 2);
+      const advancedLevels = Math.max(0, heroLevel - 3);
+
+      if (enemy.name === "Lula") {
+        enemy.hp += (initialLevels * 10) + (advancedLevels * 28);
+        enemy.atk += (initialLevels * 1) + (advancedLevels * 4);
+      } else if (enemy.name.startsWith("Xandao")) {
+        enemy.hp += (initialLevels * 12) + (advancedLevels * 30);
+        enemy.atk += (initialLevels * 1) + (advancedLevels * 4);
+      } else {
+        enemy.hp += (initialLevels * 14) + (advancedLevels * 34);
+        enemy.atk += (initialLevels * 2) + (advancedLevels * 5);
+      }
+
+      enemy.maxHp = enemy.hp;
+    }
+
     function explore() {
       if (!state.hero || state.battle) return;
       const roll = rnd(1, 100);
@@ -333,10 +366,7 @@
           { name: "Monstro Selvagem", hp: 80, atk: 15, gold: 18, xp: 25 }
         ];
         const e = { ...list[rnd(0, list.length - 1)] };
-        const lvlScale = Math.max(0, state.hero.level - 1);
-        e.hp += lvlScale * 8;
-        e.atk += Math.floor(lvlScale / 2);
-        e.maxHp = e.hp;
+        scaleNormalEnemy(e, state.hero.level);
         startBattle(e);
         return;
       }
@@ -351,11 +381,11 @@
 
       const bosses = [
         { name: "Lula", hp: 200, atk: 30, gold: 70, xp: 90 },
-        { name: "Xandao", hp: 230, atk: 32, gold: 85, xp: 110 },
+        { name: "Xandao \"o cabeca de ovo\"", hp: 230, atk: 32, gold: 85, xp: 110 },
         { name: "Taxad", hp: 260, atk: 35, gold: 100, xp: 130 }
       ];
       const b = { ...bosses[rnd(0, bosses.length - 1)] };
-      b.maxHp = b.hp;
+      scaleBossEnemy(b, state.hero.level);
       startBattle(b);
     }
 
@@ -364,8 +394,12 @@
       if (!b) return;
       const raw = b.atk + rnd(0, 9);
       const dmg = Math.max(1, raw - heroDef());
+      const blocked = raw - dmg;
       state.hero.hp = Math.max(0, state.hero.hp - dmg);
       writeLog(`${b.name} atacou e causou ${dmg} de dano.`);
+      if (blocked > 0) {
+        writeLog(`Sua defesa bloqueou ${blocked} de dano.`);
+      }
       if (state.hero.solarTurns > 0) {
         state.hero.solarTurns -= 1;
         if (state.hero.solarTurns === 0) writeLog("A energia solar se dissipou.");
@@ -512,6 +546,18 @@
       renderInventory(true);
     }
 
+    function battleSolar() {
+      if (!state.battle) return;
+      if (state.hero.solarTurns > 0) {
+        writeLog(`Solar ja ativo por ${state.hero.solarTurns} turnos.`);
+      } else {
+        state.hero.solarTurns = 3;
+        writeLog("Voce ativou acao solar. +10 ATQ por 3 turnos.");
+      }
+      enemyTurn();
+      refreshUI();
+    }
+
     function refreshUI() {
       const inBattle = Boolean(state.battle);
       hubActions.style.display = inBattle ? "none" : "flex";
@@ -537,6 +583,7 @@
     document.getElementById("btnInv").onclick = openInventory;
     document.getElementById("btnAttack").onclick = battleAttack;
     document.getElementById("btnBattlePotion").onclick = battlePotion;
+    document.getElementById("btnBattleSolar").onclick = battleSolar;
     document.getElementById("btnFlee").onclick = battleFlee;
     document.getElementById("btnCloseShop").onclick = () => setPanels();
     document.getElementById("btnCloseInv").onclick = () => setPanels();
