@@ -45,54 +45,9 @@
   background: rgba(20, 36, 76, 0.75);
 }
 
-.project-card__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  min-height: 48px;
-  padding: 0 18px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 20px;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-.btn-code {
-  background: #23a6d5;
-  color: #f2faff;
-  border-color: #53bee1;
-}
-
-.btn-demo {
-  background: #56b48f;
-  color: #f4fff9;
-  border-color: #7fd0ae;
-}
-
 @media (max-width: 900px) {
   .project-card {
     min-height: 240px;
     padding: 20px 16px;
-  }
-
-  .btn {
-    min-width: 104px;
-    min-height: 42px;
-    font-size: 17px;
   }
 }

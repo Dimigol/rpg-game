@@ -3,113 +3,545 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aventura RPG | Projeto</title>
+  <title>Aventura RPG - Web</title>
   <style>
     :root {
-      --bg: #0b121b;
-      --card: #121d2a;
-      --text: #e8f1fa;
-      --muted: #b2c7de;
-      --line: #203244;
-      --accent: #39a0ff;
+      --bg: #0a1320;
+      --card: #10243c;
+      --line: #2b4f79;
+      --text: #e6f1ff;
+      --muted: #b4c9e2;
+      --btn: #22a4d5;
+      --btn2: #5ab78f;
+      --danger: #c45151;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: "Segoe UI", Tahoma, sans-serif;
-      background: linear-gradient(180deg, #111c2b, var(--bg));
+      background: radial-gradient(circle at 20% 10%, #163660 0%, var(--bg) 60%);
       color: var(--text);
     }
-    .container {
-      width: min(1000px, 92vw);
-      margin: 36px auto;
+    .wrap {
+      width: min(980px, 94vw);
+      margin: 18px auto;
+      display: grid;
+      gap: 12px;
     }
-    .hero, .panel {
-      background: var(--card);
+    .card {
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 16px;
+      background: rgba(12, 25, 42, 0.85);
+      padding: 14px;
     }
-    h1, h2 { margin-top: 0; }
-    p { color: var(--muted); line-height: 1.6; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
-    .btn {
-      display: inline-block;
+    h1, h2, h3, p { margin: 0; }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .title { font-size: 26px; font-weight: 700; }
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .log {
+      min-height: 220px;
+      max-height: 300px;
+      overflow: auto;
+      background: rgba(4, 10, 18, 0.65);
+      border: 1px solid #234469;
+      border-radius: 10px;
+      padding: 10px;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid transparent;
+      background: var(--btn);
+      color: #f4fbff;
+      border-radius: 10px;
       padding: 10px 14px;
-      border-radius: 10px;
-      text-decoration: none;
       font-weight: 700;
+      cursor: pointer;
     }
-    .btn-play { background: var(--accent); color: #051525; }
-    .btn-download { background: #2c4158; color: #dbebfb; }
-    .btn-code { border: 1px solid #3b5572; color: #b8d3ef; }
-    .grid {
+    button.alt { background: var(--btn2); }
+    button.danger { background: var(--danger); }
+    button.ghost {
+      background: transparent;
+      border-color: #3b648f;
+      color: #cde2fb;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .panel {
+      display: none;
+      gap: 8px;
+    }
+    .panel.active { display: grid; }
+    .list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 10px;
+      gap: 6px;
     }
-    .box {
-      border: 1px solid var(--line);
+    .line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: rgba(8, 16, 28, 0.6);
+      border: 1px solid #28496f;
       border-radius: 10px;
-      padding: 12px;
-      background: #101925;
+      padding: 8px 10px;
+      font-size: 14px;
     }
-    .thumbs {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
+    .muted { color: var(--muted); font-size: 13px; }
+    .battle {
+      border-color: #6b3a45;
+      background: rgba(35, 14, 20, 0.75);
     }
-    .thumb {
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e06666, #f2b866);
       width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: #0a121c;
+    }
+    @media (max-width: 680px) {
+      .title { font-size: 22px; }
+      .log { min-height: 190px; }
+      button { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <main class="container">
-    <section class="hero">
-      <h1>Aventura RPG</h1>
-      <p>
-        RPG em Java com versao grafica (Swing), combate por turnos, inventario, loja, progressao e sistema de save/load.
-      </p>
-      <div class="actions">
-        <a class="btn btn-play" href="https://SEU-USUARIO.github.io/SEU-REPO/web/" target="_blank" rel="noreferrer">Jogar Agora</a>
-        <a class="btn btn-download" href="https://github.com/SEU-USUARIO/SEU-REPO/releases" target="_blank" rel="noreferrer">Download (.jar/.zip)</a>
-        <a class="btn btn-code" href="https://github.com/SEU-USUARIO/SEU-REPO" target="_blank" rel="noreferrer">GitHub</a>
+  <main class="wrap">
+    <section class="card top">
+      <div>
+        <h1 class="title">Aventura RPG - Web</h1>
+        <p class="status" id="statusLine"></p>
+      </div>
+      <div class="row">
+        <button class="ghost" id="btnNew">Novo Jogo</button>
+        <button class="ghost" id="btnLoad">Carregar</button>
+        <button class="ghost" id="btnSave">Salvar</button>
       </div>
     </section>
 
-    <section class="panel">
-      <h2>Stack e Features</h2>
-      <div class="grid">
-        <div class="box">
-          <strong>Stack</strong>
-          <p>Java, Swing, Programacao Orientada a Objetos.</p>
+    <section class="card">
+      <div id="battleCard" class="panel">
+        <div class="line battle">
+          <div>
+            <strong id="enemyName">Inimigo</strong>
+            <div class="muted" id="enemyStats"></div>
+          </div>
+          <div style="min-width: 220px; width: 40%">
+            <div class="bar"><div id="enemyHpFill" class="fill"></div></div>
+          </div>
         </div>
-        <div class="box">
-          <strong>Gameplay</strong>
-          <p>Exploracao, batalhas com inimigos e bosses, loot e progressao.</p>
-        </div>
-        <div class="box">
-          <strong>Sistemas</strong>
-          <p>Loja, inventario, equipamentos, buffs e save/load com validacao.</p>
-        </div>
+      </div>
+      <div id="log" class="log"></div>
+    </section>
+
+    <section class="card">
+      <div class="row" id="hubActions">
+        <button id="btnExplore">Explorar</button>
+        <button id="btnSolar">Acao Solar</button>
+        <button class="alt" id="btnShop">Loja</button>
+        <button class="alt" id="btnInv">Inventario</button>
+      </div>
+
+      <div class="row" id="battleActions" style="display:none">
+        <button id="btnAttack">Atacar</button>
+        <button class="alt" id="btnBattlePotion">Usar Pocao</button>
+        <button id="btnFlee" class="danger">Fugir</button>
       </div>
     </section>
 
-    <section class="panel">
-      <h2>Imagens / Gameplay</h2>
-      <div class="thumbs">
-        <img class="thumb" src="./assets/prints/gameplay-1.png" alt="Tela do jogo 1" />
-        <img class="thumb" src="./assets/prints/gameplay-2.png" alt="Tela do jogo 2" />
-        <img class="thumb" src="./assets/prints/gameplay-3.png" alt="Tela do jogo 3" />
-      </div>
+    <section class="card panel" id="shopPanel">
+      <h3>Loja</h3>
+      <div class="list" id="shopList"></div>
+      <button class="ghost" id="btnCloseShop">Fechar Loja</button>
+    </section>
+
+    <section class="card panel" id="invPanel">
+      <h3>Inventario</h3>
+      <div class="list" id="invList"></div>
+      <button class="ghost" id="btnCloseInv">Fechar Inventario</button>
     </section>
   </main>
+
+  <script>
+    const SAVE_KEY = "aventura_rpg_web_save_v1";
+    const logEl = document.getElementById("log");
+    const statusLine = document.getElementById("statusLine");
+    const shopPanel = document.getElementById("shopPanel");
+    const invPanel = document.getElementById("invPanel");
+    const shopList = document.getElementById("shopList");
+    const invList = document.getElementById("invList");
+    const battleCard = document.getElementById("battleCard");
+    const hubActions = document.getElementById("hubActions");
+    const battleActions = document.getElementById("battleActions");
+    const enemyName = document.getElementById("enemyName");
+    const enemyStats = document.getElementById("enemyStats");
+    const enemyHpFill = document.getElementById("enemyHpFill");
+
+    const state = {
+      hero: null,
+      inventory: [],
+      battle: null
+    };
+
+    const shopItems = [
+      { type: "potion", name: "Pocao Pequena", cost: 15, heal: 25 },
+      { type: "potion", name: "Pocao Media", cost: 25, heal: 45 },
+      { type: "potion", name: "Pocao Grande", cost: 40, heal: 70 },
+      { type: "weapon", name: "Espada de Ferro", cost: 60, atk: 8 },
+      { type: "weapon", name: "Espada Lendaria", cost: 120, atk: 15 },
+      { type: "shield", name: "Escudo de Aco", cost: 90, def: 10 },
+      { type: "armor", name: "Armadura Pesada", cost: 110, def: 12 }
+    ];
+
+    function rnd(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function writeLog(msg) {
+      logEl.textContent += (logEl.textContent ? "\n" : "") + msg;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function setPanels({ shop = false, inv = false } = {}) {
+      shopPanel.classList.toggle("active", shop);
+      invPanel.classList.toggle("active", inv);
+    }
+
+    function updateStatus() {
+      const h = state.hero;
+      if (!h) return;
+      statusLine.textContent =
+        `${h.name} | Nv ${h.level} | XP ${h.xp}/${h.xpNext} | HP ${h.hp}/${h.maxHp} | Ouro ${h.gold} | ATQ ${heroAtk()} | DEF ${heroDef()}${h.solarTurns > 0 ? " | Solar " + h.solarTurns + "t" : ""}`;
+    }
+
+    function heroAtk() {
+      const h = state.hero;
+      return h.baseAtk + h.weaponAtk + (h.solarTurns > 0 ? 10 : 0);
+    }
+
+    function heroDef() {
+      const h = state.hero;
+      return h.shieldDef + h.armorDef;
+    }
+
+    function newGame() {
+      const name = prompt("Nome do heroi:", "Heroi");
+      if (!name) return;
+      state.hero = {
+        name: name.trim() || "Heroi",
+        hp: 120,
+        maxHp: 120,
+        gold: 50,
+        level: 1,
+        xp: 0,
+        xpNext: 100,
+        baseAtk: 20,
+        weaponAtk: 0,
+        shieldDef: 0,
+        armorDef: 0,
+        weaponName: "Nenhuma",
+        shieldName: "Nenhum",
+        armorName: "Nenhuma",
+        solarTurns: 0
+      };
+      state.inventory = [];
+      state.battle = null;
+      logEl.textContent = "";
+      writeLog(`Novo jogo iniciado com ${state.hero.name}.`);
+      refreshUI();
+    }
+
+    function saveGame() {
+      if (!state.hero) return;
+      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+      writeLog("Jogo salvo no navegador.");
+    }
+
+    function loadGame() {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) {
+        writeLog("Nenhum save encontrado.");
+        return;
+      }
+      try {
+        const data = JSON.parse(raw);
+        if (!data.hero) throw new Error("save invalido");
+        state.hero = data.hero;
+        state.inventory = Array.isArray(data.inventory) ? data.inventory : [];
+        state.battle = data.battle || null;
+        writeLog("Jogo carregado.");
+      } catch {
+        writeLog("Save invalido.");
+      }
+      refreshUI();
+    }
+
+    function gainXp(amount) {
+      const h = state.hero;
+      h.xp += amount;
+      while (h.xp >= h.xpNext) {
+        h.xp -= h.xpNext;
+        h.level += 1;
+        h.maxHp += 10;
+        h.baseAtk += 2;
+        h.hp = h.maxHp;
+        h.xpNext += 55;
+        writeLog(`LEVEL UP! Agora no nivel ${h.level}.`);
+      }
+    }
+
+    function startBattle(enemy) {
+      state.battle = enemy;
+      setPanels();
+      writeLog(`Um ${enemy.name} apareceu!`);
+      refreshUI();
+    }
+
+    function explore() {
+      if (!state.hero || state.battle) return;
+      const roll = rnd(1, 100);
+      if (roll <= 60) {
+        const list = [
+          { name: "Goblin", hp: 65, atk: 17, gold: 15, xp: 20 },
+          { name: "Esqueleto", hp: 90, atk: 20, gold: 22, xp: 30 },
+          { name: "Orc", hp: 120, atk: 24, gold: 28, xp: 40 },
+          { name: "Monstro Selvagem", hp: 80, atk: 15, gold: 18, xp: 25 }
+        ];
+        const e = { ...list[rnd(0, list.length - 1)] };
+        const lvlScale = Math.max(0, state.hero.level - 1);
+        e.hp += lvlScale * 8;
+        e.atk += Math.floor(lvlScale / 2);
+        e.maxHp = e.hp;
+        startBattle(e);
+        return;
+      }
+
+      if (roll <= 90) {
+        const gold = rnd(10, 50);
+        state.hero.gold += gold;
+        writeLog(`Voce encontrou um bau e ganhou ${gold} ouro.`);
+        refreshUI();
+        return;
+      }
+
+      const bosses = [
+        { name: "Lula", hp: 200, atk: 30, gold: 70, xp: 90 },
+        { name: "Xandao", hp: 230, atk: 32, gold: 85, xp: 110 },
+        { name: "Taxad", hp: 260, atk: 35, gold: 100, xp: 130 }
+      ];
+      const b = { ...bosses[rnd(0, bosses.length - 1)] };
+      b.maxHp = b.hp;
+      startBattle(b);
+    }
+
+    function enemyTurn() {
+      const b = state.battle;
+      if (!b) return;
+      const raw = b.atk + rnd(0, 9);
+      const dmg = Math.max(1, raw - heroDef());
+      state.hero.hp = Math.max(0, state.hero.hp - dmg);
+      writeLog(`${b.name} atacou e causou ${dmg} de dano.`);
+      if (state.hero.solarTurns > 0) {
+        state.hero.solarTurns -= 1;
+        if (state.hero.solarTurns === 0) writeLog("A energia solar se dissipou.");
+      }
+      if (state.hero.hp <= 0) {
+        writeLog("GAME OVER. Inicie um novo jogo.");
+        state.battle = null;
+      }
+    }
+
+    function battleAttack() {
+      if (!state.battle) return;
+      const dmg = heroAtk() + rnd(0, 9);
+      state.battle.hp = Math.max(0, state.battle.hp - dmg);
+      writeLog(`Voce atacou e causou ${dmg} de dano em ${state.battle.name}.`);
+      if (state.battle.hp <= 0) {
+        writeLog(`Voce venceu ${state.battle.name}! +${state.battle.gold} ouro, +${state.battle.xp} XP.`);
+        state.hero.gold += state.battle.gold;
+        gainXp(state.battle.xp);
+        state.battle = null;
+        refreshUI();
+        return;
+      }
+      enemyTurn();
+      refreshUI();
+    }
+
+    function battleFlee() {
+      if (!state.battle) return;
+      if (rnd(1, 100) <= 70) {
+        writeLog("Voce fugiu da batalha.");
+        state.battle = null;
+      } else {
+        writeLog("Falha ao fugir.");
+        enemyTurn();
+      }
+      refreshUI();
+    }
+
+    function useSolar() {
+      if (!state.hero || state.battle) return;
+      if (state.hero.solarTurns > 0) {
+        writeLog(`Solar ja ativo por ${state.hero.solarTurns} turnos.`);
+      } else {
+        state.hero.solarTurns = 3;
+        writeLog("Voce ativou acao solar. +10 ATQ por 3 turnos em combate.");
+      }
+      refreshUI();
+    }
+
+    function openShop() {
+      if (!state.hero || state.battle) return;
+      setPanels({ shop: true });
+      renderShop();
+    }
+
+    function renderShop() {
+      shopList.innerHTML = "";
+      shopItems.forEach(item => {
+        const line = document.createElement("div");
+        line.className = "line";
+        const left = document.createElement("div");
+        left.innerHTML = `<strong>${item.name}</strong><div class="muted">${item.heal ? "+" + item.heal + " HP" : item.atk ? "+" + item.atk + " ATQ" : "+" + item.def + " DEF"} | ${item.cost} ouro</div>`;
+        const btn = document.createElement("button");
+        btn.textContent = "Comprar";
+        btn.onclick = () => buyItem(item);
+        line.append(left, btn);
+        shopList.appendChild(line);
+      });
+    }
+
+    function buyItem(item) {
+      const h = state.hero;
+      if (h.gold < item.cost) {
+        writeLog("Ouro insuficiente.");
+        return;
+      }
+      h.gold -= item.cost;
+      if (item.type === "potion") {
+        state.inventory.push({ name: item.name, heal: item.heal });
+        writeLog(`${item.name} comprada.`);
+      } else if (item.type === "weapon") {
+        h.weaponName = item.name;
+        h.weaponAtk = item.atk;
+        writeLog(`Arma equipada: ${item.name}.`);
+      } else if (item.type === "shield") {
+        h.shieldName = item.name;
+        h.shieldDef = item.def;
+        writeLog(`Escudo equipado: ${item.name}.`);
+      } else if (item.type === "armor") {
+        h.armorName = item.name;
+        h.armorDef = item.def;
+        writeLog(`Armadura equipada: ${item.name}.`);
+      }
+      refreshUI();
+      renderShop();
+    }
+
+    function openInventory() {
+      if (!state.hero || state.battle) return;
+      setPanels({ inv: true });
+      renderInventory(false);
+    }
+
+    function renderInventory(inBattle) {
+      invList.innerHTML = "";
+      if (!state.inventory.length) {
+        const empty = document.createElement("div");
+        empty.className = "line";
+        empty.textContent = "Inventario vazio.";
+        invList.appendChild(empty);
+        return;
+      }
+      state.inventory.forEach((item, idx) => {
+        const line = document.createElement("div");
+        line.className = "line";
+        const left = document.createElement("div");
+        left.innerHTML = `<strong>${item.name}</strong><div class="muted">Recupera ${item.heal} HP</div>`;
+        const btn = document.createElement("button");
+        btn.textContent = "Usar";
+        btn.onclick = () => usePotion(idx, inBattle);
+        line.append(left, btn);
+        invList.appendChild(line);
+      });
+    }
+
+    function usePotion(index, inBattle) {
+      const item = state.inventory[index];
+      if (!item) return;
+      state.inventory.splice(index, 1);
+      state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + item.heal);
+      writeLog(`Voce usou ${item.name} e recuperou ${item.heal} HP.`);
+      refreshUI();
+      renderInventory(inBattle);
+      if (inBattle && state.battle) {
+        enemyTurn();
+        refreshUI();
+      }
+    }
+
+    function battlePotion() {
+      if (!state.battle) return;
+      setPanels({ inv: true });
+      renderInventory(true);
+    }
+
+    function refreshUI() {
+      const inBattle = Boolean(state.battle);
+      hubActions.style.display = inBattle ? "none" : "flex";
+      battleActions.style.display = inBattle ? "flex" : "none";
+      battleCard.classList.toggle("active", inBattle);
+      updateStatus();
+
+      if (inBattle) {
+        const b = state.battle;
+        enemyName.textContent = b.name;
+        enemyStats.textContent = `ATQ ${b.atk} | Recompensa ${b.gold} ouro, ${b.xp} XP`;
+        const pct = Math.max(0, Math.min(100, (b.hp / b.maxHp) * 100));
+        enemyHpFill.style.width = pct + "%";
+      }
+    }
+
+    document.getElementById("btnNew").onclick = newGame;
+    document.getElementById("btnLoad").onclick = loadGame;
+    document.getElementById("btnSave").onclick = saveGame;
+    document.getElementById("btnExplore").onclick = explore;
+    document.getElementById("btnSolar").onclick = useSolar;
+    document.getElementById("btnShop").onclick = openShop;
+    document.getElementById("btnInv").onclick = openInventory;
+    document.getElementById("btnAttack").onclick = battleAttack;
+    document.getElementById("btnBattlePotion").onclick = battlePotion;
+    document.getElementById("btnFlee").onclick = battleFlee;
+    document.getElementById("btnCloseShop").onclick = () => setPanels();
+    document.getElementById("btnCloseInv").onclick = () => setPanels();
+
+    newGame();
+  </script>
 </body>
 </html>
