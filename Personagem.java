@@ -50,7 +50,7 @@ public class Personagem {
         return getAtaqueTotal() + random.nextInt(10);
     }
 
-    public void receberDano(int dano) {
+    public int receberDano(int dano) {
         int danoFinal = dano - getDefesaTotal();
         if (danoFinal < 1) {
             danoFinal = 1;
@@ -60,8 +60,7 @@ public class Personagem {
         if (vida < 0) {
             vida = 0;
         }
-
-        System.out.println("Sua defesa bloqueou " + (dano - danoFinal) + " de dano.");
+        return danoFinal;
     }
 
     public void curar(int valor) {
@@ -195,11 +194,11 @@ public class Personagem {
     public void exposicaoSolar() {
 
         if (buffTurnos > 0) {
-            System.out.println("seus testiculos ja estao expostos por " + buffTurnos + " turnos.");
+            System.out.println(ConfiguracaoJogo.getMensagemSolarJaAtiva(buffTurnos));
             return;
         }
 
-        System.out.println("Voce colocou os testiculos no sol.");
+        System.out.println(ConfiguracaoJogo.getMensagemSolarAtivada());
         System.out.println("Ataque aumentado por 3 turnos.");
 
         buffTurnos = 3;

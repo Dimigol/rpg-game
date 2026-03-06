@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aventura RPG | Projeto</title>
+  <style>
+    :root {
+      --bg: #0b121b;
+      --card: #121d2a;
+      --text: #e8f1fa;
+      --muted: #b2c7de;
+      --line: #203244;
+      --accent: #39a0ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(180deg, #111c2b, var(--bg));
+      color: var(--text);
+    }
+    .container {
+      width: min(1000px, 92vw);
+      margin: 36px auto;
+    }
+    .hero, .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    h1, h2 { margin-top: 0; }
+    p { color: var(--muted); line-height: 1.6; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .btn-play { background: var(--accent); color: #051525; }
+    .btn-download { background: #2c4158; color: #dbebfb; }
+    .btn-code { border: 1px solid #3b5572; color: #b8d3ef; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #101925;
+    }
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #0a121c;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>Aventura RPG</h1>
+      <p>
+        RPG em Java com versão gráfica (Swing), combate por turnos, inventário, loja, progressão e sistema de save/load.
+      </p>
+      <div class="actions">
+        <a class="btn btn-play" href="https://SEU-USUARIO.github.io/SEU-REPO/web/" target="_blank" rel="noreferrer">Jogar Agora</a>
+        <a class="btn btn-download" href="https://github.com/SEU-USUARIO/SEU-REPO/releases" target="_blank" rel="noreferrer">Download (.jar/.zip)</a>
+        <a class="btn btn-code" href="https://github.com/SEU-USUARIO/SEU-REPO" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Stack e Features</h2>
+      <div class="grid">
+        <div class="box">
+          <strong>Stack</strong>
+          <p>Java, Swing, Programação Orientada a Objetos.</p>
+        </div>
+        <div class="box">
+          <strong>Gameplay</strong>
+          <p>Exploração, batalhas com inimigos e bosses, loot e progressão.</p>
+        </div>
+        <div class="box">
+          <strong>Sistemas</strong>
+          <p>Loja, inventário, equipamentos, buffs e save/load com validação.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Imagens / Gameplay</h2>
+      <div class="thumbs">
+        <img class="thumb" src="./assets/prints/gameplay-1.png" alt="Tela do jogo 1" />
+        <img class="thumb" src="./assets/prints/gameplay-2.png" alt="Tela do jogo 2" />
+        <img class="thumb" src="./assets/prints/gameplay-3.png" alt="Tela do jogo 3" />
+      </div>
+    </section>
+  </main>
+</body>
+</html>

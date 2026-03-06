@@ -1,0 +1,101 @@
+.project-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid #223043;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0e1621;
+  color: #ecf3fb;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.project-card__media {
+  padding: 20px;
+  background: radial-gradient(circle at 10% 10%, #2a5a8f, #132639 60%, #0e1621 100%);
+}
+
+.project-card__badge {
+  display: inline-block;
+  padding: 4px 10px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  background: #0f2840;
+  color: #93c8ff;
+}
+
+.project-card__media h3 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.project-card__media p {
+  margin: 0;
+  color: #c9dbef;
+}
+
+.project-card__body {
+  padding: 20px;
+}
+
+.project-card__summary {
+  margin: 0 0 14px;
+  color: #d8e5f2;
+  line-height: 1.5;
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.project-card__tags li {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #2b3e56;
+  border-radius: 999px;
+  color: #b9d0e9;
+}
+
+.project-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.btn-primary {
+  background: #2a95ff;
+  color: #04101f;
+}
+
+.btn-secondary {
+  background: #2b3f5b;
+  color: #dce9f7;
+}
+
+.btn-ghost {
+  border: 1px solid #395171;
+  color: #bcd7f3;
+}

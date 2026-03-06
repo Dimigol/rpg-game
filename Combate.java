@@ -15,7 +15,7 @@ public class Combate {
             mostrarStatus(heroi, inimigo, nomeInimigo);
             System.out.println("1 - Atacar");
             System.out.println("2 - Usar pocao");
-            System.out.println("3 - Colocar os testiculos no sol");
+            System.out.println("3 - " + ConfiguracaoJogo.getRotuloAcaoSolar());
             System.out.println("4 - Fugir");
             System.out.print("Acao: ");
 
@@ -27,14 +27,14 @@ public class Combate {
                 return false;
             }
 
-            if (resultadoAcao == -1) {
-                continue;
-            }
-
             if (inimigo.estaVivo()) {
                 int danoInimigo = inimigo.atacar();
-                heroi.receberDano(danoInimigo);
-                System.out.println(nomeInimigo + " atacou e causou " + danoInimigo + " de dano.");
+                int danoFinal = heroi.receberDano(danoInimigo);
+                int danoBloqueado = danoInimigo - danoFinal;
+                System.out.println(nomeInimigo + " atacou e causou " + danoFinal + " de dano.");
+                if (danoBloqueado > 0) {
+                    System.out.println("Sua defesa bloqueou " + danoBloqueado + " de dano.");
+                }
             }
 
             heroi.atualizarBuff();
@@ -77,7 +77,8 @@ public class Combate {
                 System.out.println("Voce atacou e causou " + dano + " de dano em " + nomeInimigo + ".");
                 return 0;
             case 2:
-                return usarPocao(heroi, in) ? 0 : -1;
+                usarPocao(heroi, in);
+                return 0;
             case 3:
                 heroi.exposicaoSolar();
                 return 0;
@@ -85,7 +86,7 @@ public class Combate {
                 return tentarFugir() ? 1 : 0;
             default:
                 System.out.println("Opcao invalida. Escolha 1, 2, 3 ou 4.");
-                return -1;
+                return 0;
         }
     }
 

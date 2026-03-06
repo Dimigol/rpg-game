@@ -9,6 +9,7 @@ public class Game {
     public void start() {
 
         System.out.println("=== AVENTURA RPG ===");
+        configurarTomDeTexto();
         escolherInicioJogo();
 
         mapa = new Mapa();
@@ -56,7 +57,7 @@ public class Game {
             System.out.println("1 - Explorar");
             System.out.println("2 - Loja");
             System.out.println("3 - Salvar jogo");
-            System.out.println("4 - Colocar os testiculos no sol");
+            System.out.println("4 - " + ConfiguracaoJogo.getRotuloAcaoSolar());
             System.out.println("5 - Inventario");
             System.out.println("6 - Status do heroi");
             System.out.println("7 - Sair");
@@ -99,6 +100,23 @@ public class Game {
         }
 
         System.out.println("GAME OVER");
+    }
+
+    private void configurarTomDeTexto() {
+        System.out.println("Tom de texto:");
+        System.out.println("1 - Neutro");
+        System.out.println("2 - Humor");
+        System.out.print("Escolha uma opcao: ");
+
+        if (!in.hasNextInt()) {
+            in.nextLine();
+            ConfiguracaoJogo.setLinguagemNeutra(true);
+            return;
+        }
+
+        int opcao = in.nextInt();
+        in.nextLine();
+        ConfiguracaoJogo.setLinguagemNeutra(opcao != 2);
     }
 
     private void abrirInventario() {
@@ -156,4 +174,3 @@ public class Game {
         }
     }
 }
-
