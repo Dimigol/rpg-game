@@ -364,7 +364,12 @@ public class JogoGrafico extends JFrame {
 
         invListPanel = new JPanel(new GridLayout(0, 1, 6, 6));
         invListPanel.setOpaque(false);
-        panel.add(new JScrollPane(invListPanel), BorderLayout.CENTER);
+        invListPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        JScrollPane invScroll = new JScrollPane(invListPanel);
+        invScroll.setOpaque(false);
+        invScroll.getViewport().setOpaque(false);
+        invScroll.setBorder(BorderFactory.createEmptyBorder());
+        panel.add(invScroll, BorderLayout.CENTER);
         return panel;
     }
 
